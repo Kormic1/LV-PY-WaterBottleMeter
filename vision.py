@@ -21,8 +21,8 @@ img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 cv2.namedWindow("Controls")
 cv2.namedWindow("Mask")
 
-cv2.createTrackbar("Threshold low limit", "Controls", 0, 255, nothing)
-cv2.createTrackbar("Threshold high limit", "Controls", 0, 255, nothing)
+cv2.createTrackbar("Threshold low limit", "Controls", 100, 255, nothing)
+cv2.createTrackbar("Threshold high limit", "Controls", 255, 255, nothing)
 
 while True:
     if camera_capture:
@@ -41,9 +41,7 @@ while True:
 
     contours, _ = cv2.findContours(img_canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     glass_contour = max(contours, key=cv2.contourArea)
-    cv2.drawContours(img, contours, -1, (0,255,0), 4)
-
-    cv2.imshow("Controls", img)
+    #cv2.drawContours(img, contours, -1, (0,255,0), 4)
 
     x, y, w, h = cv2.boundingRect(glass_contour)
 
@@ -52,12 +50,18 @@ while True:
 
     roi = cv2.bitwise_and(img_gray, img_gray, mask=mask)
 
-    roi = roi[y:y+h, x:x+w]
+    roi = roi[y+round(0.05*h):y+h, x:x+w]
 
     sobel_y = cv2.Sobel(roi, cv2.CV_64F, 0, 1, ksize=3)  # tylko zmiany w pionie (czyli linie poziome)
     sobel_y = cv2.convertScaleAbs(sobel_y)  
+    _, thresh = cv2.threshold(sobel_y, 50, 255, cv2.THRESH_BINARY)
+    histogram = np.sum(thresh, axis=1)
+    line_y = np.argmax(histogram)
+    cv2.line(img, (0, line_y+y+round(0.05*h)), (img.shape[1], line_y+y+round(0.05*h)), (0, 255, 0), 2)
 
-    cv2.imshow("Mask", sobel_y)
+    cv2.imshow("Mask", thresh)
+
+    cv2.imshow("Controls", img)
 
     if cv2.waitKey(1) & 0xFF == 27:
         break
