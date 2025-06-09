@@ -9,7 +9,7 @@ camera_capture = False
 if camera_capture:
     cap=cv2.VideoCapture(0)
 else:
-    img = cv2.imread('LV-PY-WaterBottleMeter\water.jpg')
+    img = cv2.imread('water.jpg')
 
 if img is None:
     print("Nie udało się załadować obrazu")
@@ -23,6 +23,8 @@ cv2.namedWindow("Mask")
 
 cv2.createTrackbar("Threshold low limit", "Controls", 100, 255, nothing)
 cv2.createTrackbar("Threshold high limit", "Controls", 255, 255, nothing)
+cv2.createTrackbar("Bottom cut", "Controls", 40, 220, nothing)
+cv2.createTrackbar("Top cut", "Controls", 5, 220, nothing)
 
 while True:
     if camera_capture:
@@ -31,10 +33,12 @@ while True:
             print("Nie udało się odczytać obrazu z kamery")
             break
     else:
-        img = cv2.imread('LV-PY-WaterBottleMeter\water.jpg')
+        img = cv2.imread('water.jpg')
 
     thresh_val1 = cv2.getTrackbarPos("Threshold low limit", "Controls")
     thresh_val2 = cv2.getTrackbarPos("Threshold high limit", "Controls")
+    top_cut = cv2.getTrackbarPos("Top cut", "Controls")
+    bottom_cut = cv2.getTrackbarPos("Bottom cut", "Controls")
     
     img_canny = cv2.Canny(img_gray, thresh_val1, thresh_val2)
     #_, thresh = cv2.threshold(img_gray, thresh_val1, thresh_val2, cv2.THRESH_BINARY)
@@ -50,15 +54,24 @@ while True:
 
     roi = cv2.bitwise_and(img_gray, img_gray, mask=mask)
 
-    roi = roi[y+round(0.05*h):y+h, x:x+w]
+    roi = roi[y+top_cut:y+h-bottom_cut, x:x+w]
 
-    sobel_y = cv2.Sobel(roi, cv2.CV_64F, 0, 1, ksize=3)  # tylko zmiany w pionie (czyli linie poziome)
+    roi_height, roi_width = roi.shape
+
+    sobel_y = cv2.Sobel(roi, cv2.CV_64F, 0, 1, ksize=3)
     sobel_y = cv2.convertScaleAbs(sobel_y)  
     _, thresh = cv2.threshold(sobel_y, 50, 255, cv2.THRESH_BINARY)
     histogram = np.sum(thresh, axis=1)
     line_y = np.argmax(histogram)
-    cv2.line(img, (0, line_y+y+round(0.05*h)), (img.shape[1], line_y+y+round(0.05*h)), (0, 255, 0), 2)
-
+    
+    # show results in roi (region of interest)
+    cv2.line(thresh, (0, line_y), (img.shape[1], line_y), (0, 255, 0), 2)
+    fill = round((roi_height - line_y)/roi_height,2)
+    # show results in original image
+    line_y = line_y + y + top_cut 
+    cv2.line(img, (0, line_y), (img.shape[1], line_y), (0, 255, 0), 2)
+    
+    cv2.putText(img, f"Fill: {fill}", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
     cv2.imshow("Mask", thresh)
 
     cv2.imshow("Controls", img)
