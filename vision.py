@@ -69,7 +69,7 @@ while True:
     fill = round((roi_height - line_y)/roi_height,2)
     # show results in original image
     line_y = line_y + y + top_cut 
-    cv2.line(img, (0, line_y), (img.shape[1], line_y), (0, 255, 0), 2)
+    cv2.line(img, (x, line_y), (x+roi_width, line_y), (0, 255, 0), 2)
     
     cv2.putText(img, f"Fill: {fill}", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
     cv2.imshow("Mask", thresh)
