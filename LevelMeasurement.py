@@ -2,10 +2,7 @@ import cv2
 import numpy as np
 
 def nothing(x):
-	pass
-
-glass_top_px = 45
-glass_bottom_px = 310
+    pass
 
 def measure_level(use_glass_image):
     if not use_glass_image:
@@ -29,6 +26,9 @@ def measure_level(use_glass_image):
     #cv2.drawContours(img, contours, -1, (0,255,0), 4)
 
     x, y, w, h = cv2.boundingRect(glass_contour)
+    
+    glass_top_px = y
+    glass_bottom_px = y + h
 
     mask = np.zeros_like(img_gray, dtype=np.uint8)
     cv2.drawContours(mask, contours, -1, 255, -1) 
@@ -44,5 +44,8 @@ def measure_level(use_glass_image):
     line_y = np.argmax(histogram) + y + round(0.05 * h)
     raw_fill_level = (line_y - glass_top_px) / (glass_bottom_px - glass_top_px)
     fill_percentage = 100 * (1 - raw_fill_level)
+    
+    if fill_percentage < 0 or fill_percentage > 100:
+        return -3.0
     
     return fill_percentage
