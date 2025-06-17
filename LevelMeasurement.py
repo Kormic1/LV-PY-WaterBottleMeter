@@ -4,7 +4,7 @@ import numpy as np
 def nothing(x):
     pass
 
-def measure_level(img):
+def measure_level(use_glass_image):
     # Należy dobrać parametry w zależności od obrazu i naczynia
     # ------------------
     top_cut = 80       # obcięcie konturu od góry
@@ -12,9 +12,16 @@ def measure_level(img):
     top_thresh = 255   # górny próg detekcji krawędzi
     bottom_thresh = 50 # dolny próg detekcji krawędzi
     # ------------------
-
+    if not use_glass_image:
+        cap = cv2.VideoCapture(0)
+        ret, img = cap.read()
+        if not ret:
+            return -1.0
+    else:
+        img = cv2.imread('test1.jpg')
+        
     if img is None:
-        return 0
+        return -2.0
     
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
