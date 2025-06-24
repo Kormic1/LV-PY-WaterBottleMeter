@@ -1,24 +1,25 @@
 import cv2
 import numpy as np
 
+# Należy dobrać parametry w zależności od obrazu i naczynia
+# ------------------
+top_cut = 530       # obcięcie konturu od góry
+bottom_cut = 1480   # obcięcie konturu od dołu
+top_thresh = 255   # górny próg detekcji krawędzi
+bottom_thresh = 50 # dolny próg detekcji krawędzi
+# ------------------
+
 def nothing(x):
     pass
 
 def measure_level(use_glass_image):
-    # Należy dobrać parametry w zależności od obrazu i naczynia
-    # ------------------
-    top_cut = 80       # obcięcie konturu od góry
-    bottom_cut = 136   # obcięcie konturu od dołu
-    top_thresh = 255   # górny próg detekcji krawędzi
-    bottom_thresh = 50 # dolny próg detekcji krawędzi
-    # ------------------
     if not use_glass_image:
         cap = cv2.VideoCapture(0)
         ret, img = cap.read()
         if not ret:
             return -1.0
     else:
-        img = cv2.imread('test1.jpg')
+        img = cv2.imread('water.jpg')
         
     if img is None:
         return -2.0
@@ -37,7 +38,7 @@ def measure_level(use_glass_image):
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if len(contours) == 0:
-        return 0
+        return -3.0
 
     glass_contour = max(contours, key=cv2.contourArea)
     x, y, w, h = cv2.boundingRect(glass_contour)
@@ -50,7 +51,7 @@ def measure_level(use_glass_image):
     roi = roi[y+top_cut:y+h-bottom_cut, x:x+w]
 
     if roi.size == 0:
-        return 0
+        return -4.0
 
     roi_height, roi_width = roi.shape
 
