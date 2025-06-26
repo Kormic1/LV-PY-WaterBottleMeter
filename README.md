@@ -1,13 +1,13 @@
-# LV-PY-WaterBottleMeter
+## LV-PY-WaterBottleMeter
 Wizualizacja procesu "water bottle meter" zrealizowana w LabVIEW i Python. Aplikacja zapisuje wyniki pomiarów do lokalnej bazy danych.
 
-# Opis instalacji
+### Opis instalacji
 Do poprawnego działania aplikacji wymagane są:
 1. LabVIEW w wersji 2024 Q3 lub nowszej
 2. Python w wersji 3.10.x
 3. Lokalnie utworzona baza danych, zalecany PostgreSQL jako SZDB (System Zarządzania Bazą Danych)
 
-Po instalacji, należy umieścić pliki z gałęzi "main" w jednym folderze. Po wykonaniu tej czynności możliwe jest otworzenie projektu z poziomu launchera LabVIEW lub poprzez dwuklik na plik .lvproj.
+Po instalacji, należy umieścić pliki z gałęzi "main" w jednym folderze. Po wykonaniu tej czynności możliwe jest otworzenie projektu z poziomu launchera LabVIEW lub poprzez dwuklik na plik .lvproj. **Zalecane jest jednak uruchamianie bezpośrednio pliku Main.vi, ponieważ w innym przypadku skrypt Pythona może nie być w stanie odczytać pliku zdjęcia.**
 
 Aby wykorzystać lokalną bazę danych, należy utworzyć źródło danych ODBC (Open Database Connectivity) typu "PostgreSQL ODBC Driver(ANSI)", który przechowa informacje dotyczące sposobu nawiązania połączenia ze wskazaną bazą danych. Zalecana nazwa źródła danych to "PostgreSQL30". Jeśli użytkownik życzy sobie ustawić inną niż zalecana, konieczna jest modyfikacja "Connection string" w klastrze "DB info", w stanie "Data: Initialize", w pliku Main.vi.
 
