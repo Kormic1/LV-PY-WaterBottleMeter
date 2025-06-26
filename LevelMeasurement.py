@@ -43,5 +43,3 @@ def measure_level(use_glass_image):
     y_line_global =  line_y + top_cut
         
     return float(fill), int(y_line_global)
-
-print(measure_level(True))
