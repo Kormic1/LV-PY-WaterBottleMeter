@@ -18,7 +18,7 @@ def measure_level(use_glass_image):
         if not ret:
             return -1.0
     else:
-        img = cv2.imread('test4.jpg')
+        img = cv2.imread('first_frame.png')
         
     if img is None:
         return -2.0
@@ -42,4 +42,6 @@ def measure_level(use_glass_image):
     fill = round((vessel_height - line_y) / vessel_height, 2) * 100
     y_line_global =  line_y + top_cut
         
-    return fill, y_line_global
+    return float(fill), int(y_line_global)
+
+print(measure_level(True))
