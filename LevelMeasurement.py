@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-def measure_level(use_glass_image):
+def measure_level(use_glass_image, image_name):
     # Należy dobrać parametry w zależności od obrazu i naczynia
     # -----------------------
     top_cut = 50            # obcięcie konturu od góry
@@ -16,12 +16,12 @@ def measure_level(use_glass_image):
         cap = cv2.VideoCapture(0)
         ret, img = cap.read()
         if not ret:
-            return -1.0
+            return (-1.0, 0)
     else:
-        img = cv2.imread('first_frame.png')
+        img = cv2.imread(image_name)
         
     if img is None:
-        return -2.0
+        return (-2.0, 0)
     
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     
@@ -40,6 +40,6 @@ def measure_level(use_glass_image):
     line_y = np.argmax(histogram)
 
     fill = round((vessel_height - line_y) / vessel_height, 2) * 100
-    y_line_global =  line_y + top_cut
-        
-    return float(fill), int(y_line_global)
+    y_line_global = line_y + top_cut
+    
+    return (fill, y_line_global)
