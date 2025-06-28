@@ -32,11 +32,11 @@ def measure_level(use_glass_image, image_name):
     vessel_height, vessel_width = vessel.shape
 
     roi = vessel[0:h-detection_start, left_cut:vessel_width-right_cut]
-    sobel_y = cv2.Sobel(roi, cv2.CV_64F, 0, 1, ksize=3)
+    sobel_y = cv2.Sobel(roi, cv2.CV_64F, 0, 1, ksize = 3)
     sobel_y = cv2.convertScaleAbs(sobel_y)
     _, edge_thresh = cv2.threshold(sobel_y, bottom_thresh, top_thresh, cv2.THRESH_BINARY)
 
-    histogram = np.sum(edge_thresh, axis=1)
+    histogram = np.sum(edge_thresh, axis = 1)
     line_y = np.argmax(histogram)
 
     fill = round((vessel_height - line_y) / vessel_height, 2) * 100
