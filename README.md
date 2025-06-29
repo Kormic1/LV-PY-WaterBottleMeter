@@ -9,6 +9,8 @@ Do poprawnego działania aplikacji wymagane są:
 
 Po instalacji, należy umieścić pliki z gałęzi "main" w jednym folderze. Po wykonaniu tej czynności możliwe jest otworzenie projektu z poziomu launchera LabVIEW lub poprzez dwuklik na plik .lvproj. **Zalecane jest jednak otwieranie bezpośrednio pliku Main.vi, ponieważ w innym przypadku skrypt Pythona może nie być w stanie odczytać pliku zdjęcia.**
 
+W lokalnej bazie danych należy utworzyć tabelę o nazwie "water_level", która powinna zawierać kolumny "date" jako ciąg znaków i "level" jako wartość zmiennoprzecinkową. Możliwa jest zmiana podanych nazw, jednakże wymaga ona dodatkowo korekty nazw w klastrze "DB info", w stanie "Data: Initialize".
+
 Aby wykorzystać lokalną bazę danych, należy utworzyć źródło danych ODBC (Open Database Connectivity), wykorzystujące sterownik "PostgreSQL ODBC Driver(ANSI)", które przechowa informacje dotyczące sposobu nawiązania połączenia ze wskazaną bazą danych. Zalecana nazwa źródła danych to "PostgreSQL30". Jeśli użytkownik życzy sobie ustawić inną niż zalecana, konieczna jest modyfikacja "Connection string" w klastrze "DB info", w stanie "Data: Initialize".
 
 Finalnie, należy w systemowych ustawieniach kamery zezwolić na używanie jej przez wiele aplikacji w tym samym czasie. Brak zezwolenia będzie wiązał się z brakiem możliwości akwizycji obrazu z kamery przez skrypt Pythona.
