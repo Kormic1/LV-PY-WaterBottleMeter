@@ -14,3 +14,7 @@ W lokalnej bazie danych należy utworzyć tabelę o nazwie "water_level", która
 Aby wykorzystać lokalną bazę danych, należy utworzyć źródło danych ODBC (Open Database Connectivity), wykorzystujące sterownik "PostgreSQL ODBC Driver(ANSI)", które przechowa informacje dotyczące sposobu nawiązania połączenia ze wskazaną bazą danych. Zalecana nazwa źródła danych to "PostgreSQL30". Jeśli użytkownik życzy sobie ustawić inną niż zalecana, konieczna jest modyfikacja "Connection string" w klastrze "DB info", w stanie "Data: Initialize".
 
 Finalnie, należy w systemowych ustawieniach kamery zezwolić na używanie jej przez wiele aplikacji w tym samym czasie. Brak zezwolenia będzie wiązał się z brakiem możliwości akwizycji obrazu z kamery przez skrypt Pythona.
+
+### Linki do pobrania
+1. [Python 3.10.11](https://www.python.org/downloads/release/python-31011/)
+2. [PostgreSQL](https://www.postgresql.org/download/)
