@@ -17,4 +17,4 @@ Finalnie, należy w systemowych ustawieniach kamery zezwolić na używanie jej p
 
 ### Linki do pobrania
 1. [Python 3.10.11](https://www.python.org/downloads/release/python-31011/)
-2. [PostgreSQL](https://www.postgresql.org/download/)
+2. [PostgreSQL 17.5](https://www.postgresql.org/download/)
